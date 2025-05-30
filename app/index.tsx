@@ -1,19 +1,20 @@
-import { Stack, Link } from 'expo-router';
+import { useRouter } from 'expo-router';
+import { useEffect } from 'react';
+import { getUser } from '~/src/lib/storage';
 
-import { Button } from '~/components/Button';
-import { Container } from '~/components/Container';
-import { ScreenContent } from '~/components/ScreenContent';
+const Index = () => {
+  const router = useRouter();
+  useEffect(() => {
+    getUser().then((user) => {
+      if (user) {
+        router.replace('./tabs/tabsMain');
+      } else {
+        router.replace('/login');
+      }
+    });
+  }, []);
 
-export default function Home() {
-  return (
-    <>
-      <Stack.Screen options={{ title: 'Home' }} />
-      <Container>
-        <ScreenContent path="app/index.tsx" title="Home"></ScreenContent>
-        <Link href={{ pathname: '/details', params: { name: 'Dan' } }} asChild>
-          <Button title="Show Details" />
-        </Link>
-      </Container>
-    </>
-  );
-}
+  return null;
+};
+
+export default Index;
